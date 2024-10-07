@@ -1,12 +1,10 @@
 public class Node {
     private char letra;
-    private Node maior;
     private Node menor;
+    private Node maior;
 
     public Node(char letra) {
         this.letra = letra;
-        this.maior = null;
-        this.menor = null;
     }
 
     public char getLetra() {
@@ -17,19 +15,19 @@ public class Node {
         this.letra = letra;
     }
 
-    public Node getMaior() {
-        return maior;
-    }
-
-    public void setMaior(Node maior) {
-        this.maior = maior;
-    }
-
     public Node getMenor() {
         return menor;
     }
 
     public void setMenor(Node menor) {
         this.menor = menor;
+    }
+
+    public Node getMaior() {
+        return maior;
+    }
+
+    public void setMaior(Node maior) {
+        this.maior = maior;
     }
 }
