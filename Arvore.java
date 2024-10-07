@@ -1,6 +1,6 @@
-import java.util.Map;
+import javax.swing.JTextArea;
 import java.util.HashMap;
-import java.util.Scanner;
+import java.util.Map;
 
 public class Arvore {
     private Node raiz;
@@ -10,7 +10,6 @@ public class Arvore {
         morseCodeMap = new HashMap<>();
         initMorseCodeMap();
     }
-
 
     private void initMorseCodeMap() {
         morseCodeMap.put('A', ".-");
@@ -41,11 +40,11 @@ public class Arvore {
         morseCodeMap.put('Z', "--..");
     }
 
-
     private void insert(String code, char letra) {
         if (raiz == null) {
             raiz = new Node(letra);
-        } else {
+        } else if (raiz != null && raiz.getLetra() != letra) {
+
             insertRecursively(raiz, code, letra);
         }
     }
@@ -68,7 +67,6 @@ public class Arvore {
         atual.setLetra(letra);
     }
 
-
     public void gerarArvorePlavra(String word) {
         boolean isFirstLetter = true;
         for (char c : word.toUpperCase().toCharArray()) {
@@ -84,31 +82,22 @@ public class Arvore {
         }
     }
 
-
-    public void imprimeArvore() {
-        printArvore(raiz, "");
+    public void imprimeArvoreVertical(JTextArea textArea) {
+        printArvoreVertical(raiz, 0, textArea, true);
     }
 
-
-    private void printArvore(Node node, String indent) {
+    private void printArvoreVertical(Node node, int level, JTextArea textArea, boolean isRight) {
         if (node != null) {
-            printArvore(node.getMaior(), indent + "   ");
-            if (node.getLetra() != ' ') {
-                String morseCode = morseCodeMap.get(node.getLetra());
-                System.out.println(indent + node.getLetra() + ": " + morseCode);
+            printArvoreVertical(node.getMaior(), level + 1, textArea, true);
+            StringBuilder indentation = new StringBuilder();
+            for (int i = 0; i < level; i++) {
+                indentation.append("   ");
             }
-            printArvore(node.getMenor(), indent + "   ");
+            if (node.getLetra() != ' ') {
+                String arrow = (isRight ? " -> " : " <- ");
+                textArea.append(indentation.toString() + node.getLetra() + " = " + morseCodeMap.get(node.getLetra()) + "\n");
+            }
+            printArvoreVertical(node.getMenor(), level + 1, textArea, false);
         }
-    }
-
-
-    public void generateMorseTreeFromUserInput() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Qual palavra você quer decodificar em Código Morse? ");
-        String word = scanner.nextLine();
-
-        gerarArvorePlavra(word);
-        System.out.println("Árvore gerada: " + word);
-        imprimeArvore();
     }
 }
